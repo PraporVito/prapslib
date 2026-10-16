@@ -4,7 +4,7 @@ Advanced GeckoLib-like animation engine for the **Luanti (Minetest) 5.17+** game
 
 PrapsLib completely replaces the standard Luanti bone animation limitations, allowing developers to create highly dynamic, multi-layered, and procedurally animated entities with full glTF 2.0 and server-authoritative multiplayer support.
 
-## 🔥 Key Features
+## Key Features
 
 * **Multi-layered Animations & Blending:** Play multiple clips simultaneously (e.g., walking + attacking) with smooth crossfading.
 * **State Machine:** Unity/Godot-style graph for automated state transitions based on speeds, ground detection, and custom triggers.
@@ -12,7 +12,7 @@ PrapsLib completely replaces the standard Luanti bone animation limitations, all
 * **Molang Expressions:** Run math expressions directly inside JSON animation files (`query.anim_time`, ternaries, custom queries).
 * **Server-Authoritative Sync:** Full network synchronization with lag compensation and sequence tracking.
 
-## 🚀 Quick Start
+## Quick Start
 
 1. Add `prapslib` to your mod's `mod.conf` dependencies.
 2. Export your model from **Blockbench as glTF (.glb)** with **Model Export Scale = 1.6**.
@@ -35,5 +35,5 @@ local speed = math.sqrt(vel.x^2 + vel.z^2)
 self._machine:set_float("speed", speed)
 ```
 
-## 📜 License
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+## License
+This project is licensed under the MIT Licens
