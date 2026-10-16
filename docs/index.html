@@ -1,0 +1,1677 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PrapsLib 2.0 — Полная документация</title>
+<style>
+:root {
+  --bg: #0a0e14;
+  --bg-side: #0d1117;
+  --bg-code: #161b22;
+  --bg-card: #131820;
+  --bg-card-hover: #1a2029;
+  --fg: #c9d1d9;
+  --fg-dim: #7d8590;
+  --fg-bright: #ffffff;
+  --accent: #58a6ff;
+  --accent2: #79c0ff;
+  --green: #7ee787;
+  --orange: #ffa657;
+  --pink: #ff7b72;
+  --purple: #d2a8ff;
+  --yellow: #ffd33d;
+  --border: #21262d;
+  --border-bright: #30363d;
+  --mono: ui-monospace, "SF Mono", "Cascadia Code", Menlo, Consolas, monospace;
+  --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "Inter", Roboto, sans-serif;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 24px; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--sans);
+  font-size: 15px;
+  line-height: 1.7;
+  font-feature-settings: "ss01", "cv11";
+}
+.layout { display: flex; min-height: 100vh; }
+
+/* ============ SIDEBAR ============ */
+.sidebar {
+  width: 290px;
+  background: var(--bg-side);
+  border-right: 1px solid var(--border);
+  padding: 24px 0 60px;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+  flex-shrink: 0;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-bright) var(--bg-side);
+}
+.sidebar::-webkit-scrollbar { width: 6px; }
+.sidebar::-webkit-scrollbar-thumb { background: var(--border-bright); border-radius: 3px; }
+.brand { padding: 0 24px 20px; border-bottom: 1px solid var(--border); margin-bottom: 16px; }
+.brand h1 {
+  font-size: 19px;
+  margin: 0 0 4px;
+  color: var(--fg-bright);
+  letter-spacing: -0.4px;
+  background: linear-gradient(90deg, #58a6ff, #d2a8ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.brand .ver {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 600;
+  padding: 2px 6px;
+  background: rgba(126, 231, 135, 0.15);
+  color: var(--green);
+  border-radius: 4px;
+  margin-left: 6px;
+  vertical-align: middle;
+}
+.brand p { font-size: 11.5px; color: var(--fg-dim); margin: 6px 0 0; line-height: 1.4; }
+
+.search-box { padding: 0 16px 16px; }
+.search-box input {
+  width: 100%;
+  padding: 8px 12px;
+  background: var(--bg-code);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--fg);
+  font-family: var(--sans);
+  font-size: 13px;
+  outline: none;
+  transition: border-color 0.15s;
+}
+.search-box input:focus { border-color: var(--accent); }
+.search-box input::placeholder { color: var(--fg-dim); }
+
+.sidebar nav ul { list-style: none; padding: 0; margin: 0; }
+.sidebar a {
+  display: block;
+  padding: 5px 24px;
+  color: var(--fg-dim);
+  text-decoration: none;
+  font-size: 13px;
+  border-left: 2px solid transparent;
+  transition: all 0.12s;
+  line-height: 1.5;
+}
+.sidebar a:hover {
+  color: var(--fg-bright);
+  background: rgba(88, 166, 255, 0.06);
+  border-left-color: var(--accent);
+}
+.sidebar a.active {
+  color: var(--accent);
+  background: rgba(88, 166, 255, 0.08);
+  border-left-color: var(--accent);
+}
+.sidebar .group {
+  padding: 16px 24px 6px;
+  font-size: 10.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: var(--fg-dim);
+}
+.sidebar ul ul a { padding-left: 40px; font-size: 12.5px; }
+
+/* ============ MAIN ============ */
+main {
+  flex: 1;
+  max-width: 920px;
+  padding: 48px 56px 160px;
+  min-width: 0;
+}
+h1, h2, h3, h4, h5 { color: var(--fg-bright); letter-spacing: -0.3px; font-weight: 600; }
+h1 { font-size: 34px; margin: 0 0 12px; line-height: 1.2; }
+h2 {
+  font-size: 25px;
+  margin: 64px 0 20px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border);
+}
+h2::before {
+  content: "#";
+  color: var(--accent);
+  margin-right: 8px;
+  font-weight: 400;
+  opacity: 0.5;
+}
+h3 { font-size: 19px; margin: 36px 0 14px; color: var(--accent2); }
+h4 { font-size: 16px; margin: 26px 0 10px; }
+h5 { font-size: 14px; margin: 20px 0 8px; color: var(--fg-dim); text-transform: uppercase; letter-spacing: 0.5px; }
+p { margin: 12px 0; }
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+strong { color: var(--fg-bright); font-weight: 600; }
+em { color: var(--purple); font-style: normal; font-weight: 500; }
+ul, ol { padding-left: 22px; }
+li { margin: 4px 0; }
+hr { border: none; border-top: 1px solid var(--border); margin: 48px 0; }
+
+code {
+  background: var(--bg-code);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-family: var(--mono);
+  font-size: 0.88em;
+  color: var(--orange);
+  border: 1px solid var(--border);
+}
+pre {
+  background: var(--bg-code);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 18px 22px;
+  overflow-x: auto;
+  font-family: var(--mono);
+  font-size: 13px;
+  line-height: 1.6;
+  margin: 16px 0;
+  position: relative;
+}
+pre code {
+  background: none;
+  padding: 0;
+  color: var(--fg);
+  font-size: inherit;
+  border: none;
+}
+pre::before {
+  content: attr(data-lang);
+  position: absolute;
+  top: 8px;
+  right: 12px;
+  font-size: 10px;
+  color: var(--fg-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-family: var(--sans);
+}
+/* Syntax highlight */
+.k { color: var(--pink); }
+.s { color: var(--green); }
+.c { color: var(--fg-dim); font-style: italic; }
+.n { color: var(--orange); }
+.f { color: var(--purple); }
+.o { color: var(--accent2); }
+.b { color: var(--yellow); }
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 18px 0;
+  font-size: 13.5px;
+}
+th, td {
+  padding: 10px 14px;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+}
+th { color: var(--fg-bright); font-weight: 600; background: var(--bg-card); font-size: 12.5px; text-transform: uppercase; letter-spacing: 0.4px; }
+tr:hover td { background: rgba(88, 166, 255, 0.03); }
+td code { font-size: 12.5px; }
+
+.callout {
+  padding: 14px 18px;
+  border-left: 3px solid var(--accent);
+  background: rgba(88, 166, 255, 0.06);
+  border-radius: 0 8px 8px 0;
+  margin: 18px 0;
+  font-size: 14px;
+  line-height: 1.65;
+}
+.callout.warn  { border-color: var(--orange); background: rgba(255, 166, 87, 0.07); }
+.callout.danger{ border-color: var(--pink);   background: rgba(255, 123, 114, 0.07); }
+.callout.ok    { border-color: var(--green);  background: rgba(126, 231, 135, 0.06); }
+.callout strong:first-child { display: block; margin-bottom: 4px; }
+
+.feature-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 14px;
+  margin: 22px 0;
+}
+.feature-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 16px 18px;
+  transition: all 0.15s;
+}
+.feature-card:hover {
+  border-color: var(--accent);
+  background: var(--bg-card-hover);
+  transform: translateY(-1px);
+}
+.feature-card h4 { margin: 0 0 6px; color: var(--accent2); font-size: 14px; }
+.feature-card p { margin: 0; font-size: 12.5px; color: var(--fg-dim); line-height: 1.5; }
+
+.api-sig {
+  background: var(--bg-card);
+  border-left: 3px solid var(--green);
+  padding: 10px 16px;
+  border-radius: 0 6px 6px 0;
+  font-family: var(--mono);
+  font-size: 13px;
+  margin: 12px 0 4px;
+  color: var(--fg-bright);
+  word-break: break-word;
+}
+.api-sig::before {
+  content: "▸ ";
+  color: var(--green);
+  margin-right: 2px;
+}
+
+.toc-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 10px;
+  margin: 22px 0;
+}
+.toc-grid a {
+  display: block;
+  padding: 12px 16px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  text-decoration: none;
+  color: var(--fg);
+  font-size: 13px;
+  transition: all 0.15s;
+  border-left: 3px solid var(--border-bright);
+}
+.toc-grid a:hover {
+  border-color: var(--accent);
+  border-left-color: var(--accent);
+  background: var(--bg-card-hover);
+  text-decoration: none;
+}
+.toc-grid a strong { display: block; color: var(--accent2); font-size: 13.5px; margin-bottom: 2px; }
+.toc-grid a span { color: var(--fg-dim); font-size: 11.5px; }
+
+.badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-size: 10.5px;
+  font-weight: 700;
+  margin-left: 6px;
+  vertical-align: middle;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+.badge.new    { background: rgba(126,231,135,0.15); color: var(--green); }
+.badge.core   { background: rgba(88,166,255,0.15); color: var(--accent); }
+.badge.danger { background: rgba(255,123,114,0.15); color: var(--pink); }
+.badge.beta   { background: rgba(255,211,61,0.15); color: var(--yellow); }
+
+.conflict-row {
+  border-left: 3px solid var(--pink);
+  background: rgba(255, 123, 114, 0.04);
+  padding: 12px 18px;
+  border-radius: 0 8px 8px 0;
+  margin: 12px 0;
+}
+.conflict-row h4 { margin: 0 0 6px; color: var(--pink); }
+.conflict-row .solution { color: var(--green); font-weight: 600; }
+
+.step-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: #000;
+  font-size: 12px;
+  font-weight: 700;
+  margin-right: 8px;
+  vertical-align: middle;
+}
+
+.kbd {
+  display: inline-block;
+  padding: 1px 6px;
+  font-family: var(--mono);
+  font-size: 11.5px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-bright);
+  border-bottom-width: 2px;
+  border-radius: 4px;
+  color: var(--fg-bright);
+}
+
+.arch-diagram {
+  background: var(--bg-code);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 20px 24px;
+  font-family: var(--mono);
+  font-size: 12.5px;
+  line-height: 1.5;
+  overflow-x: auto;
+  color: var(--accent2);
+  white-space: pre;
+}
+
+.tip {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  padding: 14px 18px;
+  background: linear-gradient(135deg, rgba(210, 168, 255, 0.06), rgba(88, 166, 255, 0.04));
+  border: 1px solid rgba(210, 168, 255, 0.2);
+  border-radius: 10px;
+  margin: 16px 0;
+  font-size: 13.5px;
+}
+.tip::before {
+  content: "💡";
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+/* Anchors визуально */
+h2, h3 { scroll-margin-top: 24px; }
+
+/* Mobile */
+@media (max-width: 900px) {
+  .layout { flex-direction: column; }
+  .sidebar { width: 100%; position: relative; height: auto; max-height: 400px; }
+  main { padding: 24px 20px 100px; }
+  h2 { font-size: 22px; margin-top: 40px; }
+  h1 { font-size: 26px; }
+}
+</style>
+</head>
+<body>
+<div class="layout">
+
+<!-- ============================================================ -->
+<!-- SIDEBAR -->
+<!-- ============================================================ -->
+<aside class="sidebar">
+  <div class="brand">
+    <h1>PrapsLib <span class="ver">2.0</span></h1>
+    <p>GeckoLib-class animation engine for Luanti 5.17+</p>
+  </div>
+  <div class="search-box">
+    <input type="text" id="search" placeholder="Поиск по API...">
+  </div>
+  <nav>
+    <div class="group">Начало</div>
+    <ul>
+      <li><a href="#overview">Обзор</a></li>
+      <li><a href="#features">Возможности</a></li>
+      <li><a href="#install">Установка</a></li>
+      <li><a href="#arch">Архитектура</a></li>
+    </ul>
+    <div class="group">Гайды</div>
+    <ul>
+      <li><a href="#quickstart">Быстрый старт</a></li>
+      <li><a href="#gltf">glTF вместо b3d</a></li>
+      <li><a href="#scale">Масштабы и позиции</a></li>
+      <li><a href="#json">Формат JSON</a></li>
+      <li><a href="#example-full">Полный пример</a></li>
+    </ul>
+    <div class="group">Модули</div>
+    <ul>
+      <li><a href="#api-prapslib">prapslib</a></li>
+      <li><a href="#api-controller">controller</a></li>
+      <li><a href="#api-sm">state_machine</a></li>
+      <li><a href="#api-keyframes">keyframes</a></li>
+      <li><a href="#api-molang">molang</a></li>
+      <li><a href="#api-easing">easing</a></li>
+      <li><a href="#api-math">math_utils</a></li>
+      <li><a href="#api-ik">ik</a></li>
+      <li><a href="#api-net">net</a></li>
+      <li><a href="#api-parser">parser / cache</a></li>
+    </ul>
+    <div class="group">Рецепты</div>
+    <ul>
+      <li><a href="#recipe-locomotion">Locomotion + дыхание</a></li>
+      <li><a href="#recipe-attack">Атака поверх движения</a></li>
+      <li><a href="#recipe-spider">Паук на IK</a></li>
+      <li><a href="#recipe-player">Реанимация игрока</a></li>
+      <li><a href="#recipe-net">Мультиплеер</a></li>
+    </ul>
+    <div class="group">Важно</div>
+    <ul>
+      <li><a href="#conflicts">⚠️ Конфликты</a></li>
+      <li><a href="#recommendations">Рекомендации</a></li>
+      <li><a href="#troubleshooting">Troubleshooting</a></li>
+      <li><a href="#lua-pitfalls">Lua 5.1 подводные</a></li>
+    </ul>
+    <div class="group">Прочее</div>
+    <ul>
+      <li><a href="#faq">FAQ</a></li>
+      <li><a href="#roadmap">Roadmap</a></li>
+      <li><a href="#credits">Credits</a></li>
+    </ul>
+  </nav>
+</aside>
+
+<!-- ============================================================ -->
+<!-- MAIN -->
+<!-- ============================================================ -->
+<main>
+
+<h1>PrapsLib 2.0</h1>
+<p style="color: var(--fg-dim); font-size: 16px; margin-top: 0;">
+Анимационный движок уровня GeckoLib для Luanti 5.17+ · glTF · IK · State Machine · Мультиплеер
+</p>
+
+<div class="callout ok">
+<strong>Это полная документация</strong>
+Все API, рецепты, известные конфликты и рекомендации по интеграции. Если ты только начинаешь — читай сверху вниз, 20 минут хватит. Если чинишь баг — прыгай в <a href="#troubleshooting">Troubleshooting</a>.
+</div>
+
+<!-- ============================================================ -->
+<h2 id="overview">Обзор</h2>
+
+<p>PrapsLib 2.0 — это полноценная система анимации персонажей для Luanti, вдохновлённая <strong>GeckoLib</strong> из Minecraft. Она парсит Bedrock-совместимые <code>.animation.json</code>, поддерживает множественные слои с аддитивным смешиванием, контроллеры, state machine, keyframe events, Molang, IK и сервер-авторитарную синхронизацию.</p>
+
+<h3>Зачем это нужно</h3>
+<p>Стандартный API Luanti <code>set_bone_override</code> позволяет проигрывать одну позу за раз. PrapsLib даёт:</p>
+<ul>
+  <li><strong>Множественные клипы одновременно</strong> — ходьба + дыхание + атака</li>
+  <li><strong>Плавные crossfade-переходы</strong> между анимациями</li>
+  <li><strong>State machine</strong> с автоматическими переходами по условиям</li>
+  <li><strong>События на кадрах</strong> — звуки, частицы, кастомные колбэки</li>
+  <li><strong>Molang</strong> — математика прямо в JSON</li>
+  <li><strong>Синхронизацию</strong> в мультиплеере с компенсацией задержки</li>
+  <li><strong>IK-решатели</strong> для процедурных ног, рук, цепочек</li>
+</ul>
+
+<h3>Философия движка</h3>
+<p>PrapsLib — <strong>не медиатор</strong>, а движок. Он загружается последним, пишет bone override последним в globalstep, и его поза побеждает. Если в твоём моде есть конкурент (mobs_redo, playeranim) — это <a href="#conflicts">решается на уровне load order</a>, а не через компромиссы внутри движка.</p>
+
+<!-- ============================================================ -->
+<h2 id="features">Возможности</h2>
+
+<div class="feature-grid">
+  <div class="feature-card"><h4>Контроллеры</h4><p>Аналог AnimationController: один клип на контроллер, множество одновременно, приоритеты и аддитивность</p></div>
+  <div class="feature-card"><h4>State Machine</h4><p>Граф состояний с условиями, crossfade, параметрами (bool/float/trigger), any-state переходами</p></div>
+  <div class="feature-card"><h4>Molang</h4><p>Математика в JSON: <code>query.anim_time * 90</code>, тернарники, свои queries</p></div>
+  <div class="feature-card"><h4>Keyframe Events</h4><p>Звуки, частицы, кастомные колбэки в точный момент времени из Blockbench timeline</p></div>
+  <div class="feature-card"><h4>30+ Easing</h4><p>Quad, Cubic, Back, Elastic, Bounce, Catmull-Rom, per-axis Bezier</p></div>
+  <div class="feature-card"><h4>IK Solver</h4><p>2-bone analytic + FABRIK для цепочек. Процедурные ноги паука на рельефе</p></div>
+  <div class="feature-card"><h4>Мультиплеер</h4><p>Сервер-авторитарная синхронизация с компенсацией задержки, sequence numbers</p></div>
+  <div class="feature-card"><h4>Quaternion Math</h4><p>Slerp с anti-flip, euler↔quat, shortest_angle, wrap</p></div>
+  <div class="feature-card"><h4>Procedural</h4><p>Value noise, FBM, look_at, raycast — для живых персонажей</p></div>
+  <div class="feature-card"><h4>glTF-ready</h4><p>Полная совместимость с glTF-скелетами Luanti 5.10+</p></div>
+</div>
+
+<!-- ============================================================ -->
+<h2 id="install">Установка</h2>
+
+<h3>Структура</h3>
+<pre data-lang="tree"><code>worldmods/prapslib/
+├── mod.conf
+├── init.lua              <span class="c">-- главный API + globalstep</span>
+├── animator.lua          <span class="c">-- реестр сущностей + сборка поз</span>
+├── controller.lua        <span class="c">-- контроллеры клипов</span>
+├── state_machine.lua     <span class="c">-- граф состояний</span>
+├── keyframes.lua         <span class="c">-- события на кадрах</span>
+├── molang.lua            <span class="c">-- вычислитель выражений</span>
+├── easing.lua            <span class="c">-- 30+ кривых</span>
+├── ik.lua                <span class="c">-- 2-bone + FABRIK</span>
+├── math_utils.lua        <span class="c">-- quaternion, вектора, noise</span>
+├── parser.lua            <span class="c">-- Bedrock JSON → структура</span>
+├── cache.lua             <span class="c">-- кэш анимаций по mod+entity</span>
+└── net.lua               <span class="c">-- синхронизация</span></code></pre>
+
+<h3>mod.conf</h3>
+<pre data-lang="ini"><code>name = prapslib
+description = GeckoLib-class animation engine for Luanti
+optional_depends = </code></pre>
+
+<div class="callout warn">
+<strong>Требования</strong>
+Luanti <strong>5.17.0+</strong>. Младшие версии не имеют <code>set_bone_override</code> с полями <code>rotation</code>, <code>position</code>, <code>scale</code> для glTF-скелетов.
+</div>
+
+<!-- ============================================================ -->
+<h2 id="arch">Архитектура</h2>
+
+<div class="arch-diagram">┌─────────────────────────────────────────────────────────┐
+│                       init.lua                          │
+│              (главный API + globalstep)                 │
+└──────┬────────────────────────────────┬─────────────────┘
+       │                                │
+       ▼                                ▼
+┌──────────────┐               ┌──────────────────┐
+│ state_machine│──────────────▶│   controller     │
+│  (граф фаз)  │               │ (клипы + позы)   │
+└──────┬───────┘               └────────┬─────────┘
+       │                                │
+       │         ┌──────────────────────┼──────────┐
+       │         ▼                      ▼          ▼
+       │  ┌────────────┐        ┌──────────┐ ┌────────┐
+       │  │ keyframes  │        │  easing  │ │ molang │
+       │  │ (события)  │        └──────────┘ └────────┘
+       │  └────────────┘
+       │
+       ▼
+┌──────────────┐         ┌────────────┐
+│   animator   │◀────────│   cache    │
+│ (bone mix)   │         └─────┬──────┘
+└──────┬───────┘               │
+       │                       ▼
+       │              ┌────────────────┐
+       │              │    parser      │
+       │              │ (.animation.json)
+       │              └────────┬───────┘
+       │                       │
+       │              ┌────────┴───────┐
+       │              │  math_utils    │
+       │              └────────────────┘
+       ▼
+┌──────────────┐
+│     net      │  ← синхронизация сервер↔клиент
+└──────────────┘</div>
+
+<h3>Поток данных</h3>
+<ol>
+  <li><strong>Парсинг</strong> — <code>parser</code> читает JSON → структура bone/keyframe/easing/Molang</li>
+  <li><strong>Кэш</strong> — <code>cache</code> хранит распарсенные анимации по <code>modname + entity_type</code></li>
+  <li><strong>State Machine</strong> — проверяет условия переходов, дёргает <code>controller:set_animation</code></li>
+  <li><strong>Controller</strong> — сэмплирует keyframes, миксует transitions, отдаёт позу</li>
+  <li><strong>Animator</strong> — собирает позы со всех контроллеров, применяет bone override</li>
+  <li><strong>Net</strong> — рассылает команды клиентам, компенсирует задержку</li>
+</ol>
+
+<h3>Ключи сущностей</h3>
+<p>Все реестры используют <code>entity:get_id()</code> как ключ. Если у сущности нет ID (например, на клиенте), используется <code>tostring(entity)</code>. Это гарантирует совпадение между сервером и клиентом.</p>
+
+<!-- ============================================================ -->
+<h2 id="quickstart">Быстрый старт</h2>
+
+<h3><span class="step-num">1</span>Регистрация анимаций</h3>
+<p>Помести файл <code>goblin.animation.json</code> в <code>mymod/prapslib/</code>:</p>
+<pre data-lang="json"><code>{
+  <span class="s">"format_version"</span>: <span class="s">"1.8.0"</span>,
+  <span class="s">"animations"</span>: {
+    <span class="s">"walk"</span>: {
+      <span class="s">"loop"</span>: <span class="b">true</span>,
+      <span class="s">"animation_length"</span>: <span class="n">1.0</span>,
+      <span class="s">"bones"</span>: {
+        <span class="s">"leg_left"</span>: {
+          <span class="s">"rotation"</span>: {
+            <span class="s">"0.0"</span>: [<span class="n">0</span>, <span class="n">0</span>, <span class="n">0</span>],
+            <span class="s">"0.5"</span>: [<span class="n">30</span>, <span class="n">0</span>, <span class="n">0</span>],
+            <span class="s">"1.0"</span>: [<span class="n">0</span>, <span class="n">0</span>, <span class="n">0</span>]
+          }
+        }
+      }
+    }
+  }
+}</code></pre>
+
+<h3><span class="step-num">2</span>Регистрация сущности</h3>
+<pre data-lang="lua"><code><span class="k">local</span> prapslib = prapslib
+
+minetest.<span class="f">register_entity</span>(<span class="s">"mymod:goblin"</span>, {
+  initial_properties = {
+    visual = <span class="s">"mesh"</span>,
+    mesh = <span class="s">"goblin.gltf"</span>,     <span class="c">-- glTF вместо b3d</span>
+    textures = {<span class="s">"goblin.png"</span>},
+  },
+
+  on_activate = <span class="k">function</span>(self, staticdata)
+    prapslib.<span class="f">register_entity</span>(self.object)
+    prapslib.<span class="f">register_entity_data</span>(<span class="s">"mymod"</span>, <span class="s">"mymod:goblin"</span>)
+
+    <span class="k">local</span> m = prapslib.sm.<span class="f">create_locomotion</span>(self.object, {
+      idle = <span class="s">"idle"</span>, walk = <span class="s">"walk"</span>,
+      run  = <span class="s">"run"</span>,  jump = <span class="s">"jump"</span>,
+      breath = <span class="s">"breath"</span>,
+    })
+    self._machine = m
+  <span class="k">end</span>,
+
+  on_step = <span class="k">function</span>(self, dtime)
+    <span class="k">local</span> vel = self.object:<span class="f">get_velocity</span>()
+    <span class="k">local</span> speed = math.<span class="f">sqrt</span>(vel.x^<span class="n">2</span> + vel.y^<span class="n">2</span> + vel.z^<span class="n">2</span>)
+    self._machine:<span class="f">set_float</span>(<span class="s">"speed"</span>, speed)
+    self._machine:<span class="f">set_bool</span>(<span class="s">"on_ground"</span>, <span class="b">true</span>)
+  <span class="k">end</span>,
+
+  on_deactivate = <span class="k">function</span>(self)
+    prapslib.<span class="f">unregister_entity</span>(self.object)
+  <span class="k">end</span>,
+})</code></pre>
+
+<p>Всё. Дальше движок сам:</p>
+<ul>
+  <li>Загрузит и распарсит анимации</li>
+  <li>Создаст контроллеры и слои</li>
+  <li>Будет переключать <code>idle → walk → run → jump</code> по скорости</li>
+  <li>Синхронизирует всех игроков в мультиплеере</li>
+</ul>
+
+<!-- ============================================================ -->
+<h2 id="gltf">glTF вместо b3d <span class="badge new">5.10+</span></h2>
+
+<p>Luanti 5.10 завёз <strong>glTF 2.0</strong> с поддержкой скелетной анимации. Это современный формат, экспорт из Blockbench напрямую, без костылей в Blender.</p>
+
+<h3>Экспорт из Blockbench</h3>
+<ol>
+  <li>Открываешь модель, выбираешь <strong>File → Export → glTF</strong></li>
+  <li>В настройках экспорта:</li>
+</ol>
+
+<table>
+<tr><th>Параметр</th><th>Значение</th><th>Почему</th></tr>
+<tr><td>Format</td><td><code>glTF Binary (.glb)</code></td><td>Один файл, быстрее грузится</td></tr>
+<tr><td>Model Export Scale</td><td><code>1.6</code></td><td>Пересчёт пикселей Blockbench → единицы Luanti (см. <a href="#scale">ниже</a>)</td></tr>
+<tr><td>Include Animations</td><td>✅</td><td>Вся вкладка Animate попадёт в файл</td></tr>
+<tr><td>Include Empty Parents</td><td>✅</td><td>Иерархия скелета сохранится</td></tr>
+<tr><td>Bake Animations</td><td>❌</td><td>Оставляй ключевые кадры, движок сам интерполирует</td></tr>
+<tr><td>Compress</td><td>❌</td><td>Luanti не читает Draco-сжатие</td></tr>
+</table>
+
+<div class="callout warn">
+<strong>Luanti игнорирует CUBICSPLINE</strong>
+Из glTF-формата Luanti понимает только <code>LINEAR</code> и <code>STEP</code> интерполяцию. Твои cubic-bezier кривые из Blockbench в glTF <strong>не перенесутся</strong>. Решение — использовать easing на стороне PrapsLib (см. <a href="#api-easing">easing</a>), но это работает только если ты сам конвертируешь keyframes, а не отдаёшь glTF движку напрямую.
+</div>
+
+<div class="callout danger">
+<strong>Матричные ноды нельзя анимировать</strong>
+Если в glTF узел имеет transform в виде <code>matrix</code> (а не <code>translation + rotation + scale</code>), Luanti <strong>не даст</strong> наложить на него bone override. Проверь в Blockbench: правый клик по кости → <em>Reset Transform</em>, потом пересохрани.
+</div>
+
+<h3>Ограничения glTF в Luanti 5.17</h3>
+<table>
+<tr><th>Ограничение</th><th>Обход</th></tr>
+<tr><td>Нет CUBICSPLINE</td><td>Свои easing-кривые в PrapsLib</td></tr>
+<tr><td>Нет матричных нод</td><td>Reset Transform перед экспортом</td></tr>
+<tr><td>Максимум 4 кости на вершину (weights)</td><td>Стандарт для игровых моделей, обычно OK</td></tr>
+<tr><td>Нет морф-таргетов (blend shapes)</td><td>Bone override или shape keys через несколько мешей</td></tr>
+<tr><td>Нет multiple animations в одном клипе</td><td>Каждый клип — отдельный файл или PrapsLib mixer</td></tr>
+</table>
+
+<!-- ============================================================ -->
+<h2 id="scale">Масштабы и позиции</h2>
+
+<p>Это самая частая причина «почему у меня модель гигантская» или «почему кости в 16 раз дальше чем надо».</p>
+
+<h3>Три системы измерения</h3>
+<table>
+<tr><th>Где</th><th>Единица</th><th>Отношение</th></tr>
+<tr><td>Blockbench (модель)</td><td>пиксели (cube units)</td><td>16 px = 1 блок</td></tr>
+<tr><td>Blockbench (glTF export)</td><td>метры glTF</td><td>1 блок = 1 glTF unit</td></tr>
+<tr><td>Luanti (glTF import)</td><td>ноды</td><td>10 glTF units = 1 нода</td></tr>
+</table>
+
+<h3>Итоговая формула</h3>
+<pre data-lang="text"><code>Blockbench: 16 px = 1 block
+glTF:       1 block = 1 unit  (по спецификации)
+Luanti:     10 units = 1 node
+
+→ 16 px в Blockbench = 1 block = 10 units = 1 node в Luanti</code></pre>
+
+<h3>Что делать</h3>
+<div class="callout ok">
+<strong>Model Export Scale = 1.6</strong>
+Это единственное число, которое нужно помнить. Blockbench сам пересчитает все пиксели в единицы glTF так, чтобы в Luanti модель была ровно того размера, что ты видишь в Blockbench.
+</div>
+
+<h3>Анимации костей</h3>
+<p>Позиции костей в <code>.animation.json</code> от Blockbench тоже в пикселях (16 = 1 блок). Твой <code>animator.lua</code> делит их на 16 (<code>POSITION_SCALE = 1.0 / 16.0</code>). Это правильно для <strong>обеих</strong> моделей — b3d и glTF — при условии что модель экспортирована с правильным масштабом.</p>
+
+<pre data-lang="lua"><code><span class="c">-- animator.lua</span>
+<span class="k">local</span> POSITION_SCALE = <span class="n">1.0</span> / <span class="n">16.0</span>
+
+<span class="c">-- position из JSON в пикселях → block units для Luanti</span>
+override.position = { vec = {
+    x = position[<span class="n">1</span>] * POSITION_SCALE,
+    y = position[<span class="n">2</span>] * POSITION_SCALE,
+    z = position[<span class="n">3</span>] * POSITION_SCALE,
+}, absolute = <span class="b">false</span> }</code></pre>
+
+<div class="callout warn">
+<strong>Если модель в Blockbench в блоках, а не пикселях</strong>
+Если ты строишь модель «в блоках» (например, 2×3×1), то деление на 16 сломает позиции. В этом случае либо строй в пикселях (32×48×16), либо поменяй <code>POSITION_SCALE = 1.0</code>.
+</div>
+
+<!-- ============================================================ -->
+<h2 id="json">Формат JSON</h2>
+
+<p>PrapsLib использует <strong>Bedrock Animated Model</strong>-совместимый формат. Модели из Blockbench с экспортом <em>Bedrock Entity</em> работают из коробки.</p>
+
+<h3>Структура файла</h3>
+<pre data-lang="json"><code>{
+  <span class="s">"format_version"</span>: <span class="s">"1.8.0"</span>,
+  <span class="s">"animations"</span>: {
+    <span class="s">"&lt;имя_анимации&gt;"</span>: {
+      <span class="s">"loop"</span>: <span class="s">"loop"</span> | <span class="s">"play_once"</span> | <span class="s">"hold_on_last_frame"</span>,
+      <span class="s">"animation_length"</span>: <span class="n">1.5</span>,
+      <span class="s">"interpolation"</span>: <span class="s">"linear"</span> | <span class="s">"cubic"</span> | <span class="s">"catmullrom"</span>,
+      <span class="s">"bones"</span>: {
+        <span class="s">"&lt;имя_кости&gt;"</span>: {
+          <span class="s">"rotation"</span>: { <span class="c">/* keyframes */</span> },
+          <span class="s">"position"</span>: { <span class="c">/* keyframes */</span> },
+          <span class="s">"scale"</span>:    { <span class="c">/* keyframes */</span> }
+        }
+      },
+      <span class="s">"sound_effects"</span>: {
+        <span class="s">"0.4"</span>: { <span class="s">"effect"</span>: <span class="s">"mymod:step"</span> }
+      },
+      <span class="s">"particle_effects"</span>: {
+        <span class="s">"0.6"</span>: { <span class="s">"effect"</span>: <span class="s">"mymod:dust"</span> }
+      },
+      <span class="s">"timeline"</span>: {
+        <span class="s">"1.2"</span>: [
+          { <span class="s">"type"</span>: <span class="s">"custom"</span>, <span class="s">"data"</span>: <span class="s">"deal_damage"</span> }
+        ]
+      }
+    }
+  }
+}</code></pre>
+
+<h3>Все формы keyframe</h3>
+<pre data-lang="json"><code><span class="c">// 1. Одиночное значение на t=0</span>
+<span class="s">"rotation"</span>: [<span class="n">0</span>, <span class="n">0</span>, <span class="n">0</span>]
+
+<span class="c">// 2. Явные ключевые кадры</span>
+<span class="s">"rotation"</span>: {
+  <span class="s">"0.0"</span>: [<span class="n">0</span>, <span class="n">0</span>, <span class="n">0</span>],
+  <span class="s">"0.5"</span>: [<span class="n">45</span>, <span class="n">0</span>, <span class="n">0</span>],
+  <span class="s">"1.0"</span>: [<span class="n">0</span>, <span class="n">0</span>, <span class="n">0</span>]
+}
+
+<span class="c">// 3. С pre/post (Bezier control points)</span>
+<span class="s">"rotation"</span>: {
+  <span class="s">"0.5"</span>: {
+    <span class="s">"pre"</span>:  [<span class="n">10</span>, <span class="n">0</span>, <span class="n">0</span>],
+    <span class="s">"post"</span>: [<span class="n">80</span>, <span class="n">0</span>, <span class="n">0</span>],
+    <span class="s">"easing"</span>: <span class="s">"easeOutQuad"</span>
+  }
+}
+
+<span class="c">// 4. Molang-выражение</span>
+<span class="s">"rotation"</span>: [<span class="s">"query.anim_time * 90"</span>, <span class="n">0</span>, <span class="n">0</span>]</code></pre>
+
+<!-- ============================================================ -->
+<h2 id="example-full">Полный пример: босс с фазами</h2>
+
+<pre data-lang="lua"><code><span class="k">local</span> function <span class="f">register_boss</span>()
+  minetest.<span class="f">register_entity</span>(<span class="s">"mymod:dragon"</span>, {
+    initial_properties = {
+      visual = <span class="s">"mesh"</span>,
+      mesh = <span class="s">"dragon.gltf"</span>,
+      textures = {<span class="s">"dragon.png"</span>},
+      physical = <span class="b">true</span>,
+    },
+
+    on_activate = <span class="k">function</span>(self, staticdata)
+      prapslib.<span class="f">register_entity</span>(self.object)
+      prapslib.<span class="f">register_entity_data</span>(<span class="s">"mymod"</span>, <span class="s">"mymod:dragon"</span>)
+
+      <span class="k">local</span> m = prapslib.sm.<span class="f">register</span>(self.object, <span class="s">"combat"</span>)
+
+      m:<span class="f">add_state</span>(<span class="s">"idle"</span>, {
+        layers = {
+          { controller = <span class="s">"main"</span>, anim = <span class="s">"dragon_idle"</span> },
+          { controller = <span class="s">"breath"</span>, anim = <span class="s">"dragon_breath"</span>,
+            blend = <span class="s">"additive"</span>, weight = <span class="n">0.4</span> },
+        },
+        transitions = {
+          { to = <span class="s">"walk"</span>, when = <span class="k">function</span>(ctx) <span class="k">return</span> ctx.speed &gt; <span class="n">0.1</span> <span class="k">end</span>,
+            duration_ticks = <span class="n">8</span> },
+          { to = <span class="s">"roar"</span>, when = <span class="k">function</span>(ctx) <span class="k">return</span> ctx.aggro <span class="k">end</span>,
+            duration_ticks = <span class="n">3</span>, priority = <span class="n">10</span> },
+        },
+      })
+
+      m:<span class="f">add_state</span>(<span class="s">"walk"</span>, {
+        layers = {
+          { controller = <span class="s">"main"</span>, anim = <span class="s">"dragon_walk"</span> },
+          { controller = <span class="s">"breath"</span>, anim = <span class="s">"dragon_breath"</span>,
+            blend = <span class="s">"additive"</span>, weight = <span class="n">0.7</span> },
+        },
+        transitions = {
+          { to = <span class="s">"idle"</span>, when = <span class="k">function</span>(ctx) <span class="k">return</span> ctx.speed &lt;= <span class="n">0.1</span> <span class="k">end</span>,
+            duration_ticks = <span class="n">8</span> },
+          { to = <span class="s">"fly"</span>, when = <span class="s">"!on_ground"</span>, duration_ticks = <span class="n">5</span> },
+        },
+      })
+
+      m:<span class="f">add_state</span>(<span class="s">"roar"</span>, {
+        layers = {
+          { controller = <span class="s">"main"</span>, anim = <span class="s">"dragon_roar"</span>,
+            loop = <span class="s">"hold_on_last_frame"</span> },
+        },
+        transitions = {
+          { to = <span class="s">"idle"</span>, when = <span class="k">function</span>(ctx)
+              <span class="k">return</span> ctx.time_in_state &gt; <span class="n">2.5</span>
+            <span class="k">end</span>, duration_ticks = <span class="n">8</span> },
+        },
+        events = {
+          on_enter = <span class="k">function</span>(entity)
+            minetest.<span class="f">sound_play</span>(<span class="s">"dragon_roar"</span>, {
+              object = entity, gain = <span class="n">1.0</span>
+            })
+          <span class="k">end</span>,
+        },
+      })
+
+      m:<span class="f">set_initial</span>(<span class="s">"idle"</span>)
+      m:<span class="f">force_state</span>(<span class="s">"idle"</span>, <span class="n">0</span>)
+
+      <span class="c">-- Keyframe events из JSON (звук шагов)</span>
+      prapslib.keyframes.<span class="f">set_sound_handler</span>(
+        self.object, <span class="s">"main"</span>, prapslib.keyframes.auto_sound_handler
+      )
+
+      self._machine = m
+    <span class="k">end</span>,
+
+    on_step = <span class="k">function</span>(self, dtime)
+      <span class="k">local</span> vel = self.object:<span class="f">get_velocity</span>()
+      <span class="k">local</span> speed = math.<span class="f">sqrt</span>(vel.x^<span class="n">2</span> + vel.z^<span class="n">2</span>)
+      self._machine:<span class="f">set_float</span>(<span class="s">"speed"</span>, speed)
+      self._machine:<span class="f">set_bool</span>(<span class="s">"aggro"</span>, self.aggro <span class="k">or</span> <span class="b">false</span>)
+    <span class="k">end</span>,
+  })
+<span class="k">end</span></code></pre>
+
+<!-- ============================================================ -->
+<h2 id="api-prapslib">API: prapslib</h2>
+
+<p>Главный модуль. Загружается как глобальная таблица после инициализации мода.</p>
+
+<div class="api-sig">prapslib.register_entity(entity) → id</div>
+<p>Регистрирует объект в реестре движка. Вызывай в <code>on_activate</code>. Регистрирует в animator + net.</p>
+
+<div class="api-sig">prapslib.unregister_entity(entity)</div>
+<p>Убирает из реестра. Вызывай в <code>on_deactivate</code>.</p>
+
+<div class="api-sig">prapslib.register_entity_data(modname, entity_type) → data | nil, err</div>
+<p>Загружает анимации из <code>modname/prapslib/&lt;entity_name&gt;.animation.json</code>. Fallback: <code>entity.animation.json</code>. Результат кэшируется.</p>
+
+<div class="api-sig">prapslib.play_animation(entity, animation_name, options) → state</div>
+<p>Простой one-shot запуск. Для сложного — используй <code>controller</code> или <code>sm</code>.</p>
+<p><strong>options:</strong> <code>mode</code>, <code>speed</code>, <code>loop</code>, <code>blend_time</code>, <code>interpolation</code></p>
+
+<div class="api-sig">prapslib.stop_animation(entity)</div>
+<div class="api-sig">prapslib.reset_bones(entity)</div>
+<div class="api-sig">prapslib.is_playing(entity) → bool</div>
+<div class="api-sig">prapslib.get_animation_time(entity) → number</div>
+<div class="api-sig">prapslib.clear_cache()</div>
+
+<h3>Прямой доступ к модулям</h3>
+<pre data-lang="lua"><code>prapslib.math       <span class="c">-- math_utils</span>
+prapslib.easing     <span class="c">-- easing</span>
+prapslib.molang     <span class="c">-- molang</span>
+prapslib.parser     <span class="c">-- parser</span>
+prapslib.cache      <span class="c">-- cache</span>
+prapslib.controller <span class="c">-- controller</span>
+prapslib.sm         <span class="c">-- state_machine</span>
+prapslib.keyframes  <span class="c">-- keyframes</span>
+prapslib.animator   <span class="c">-- animator</span>
+prapslib.net        <span class="c">-- net</span>
+prapslib.ik         <span class="c">-- ik</span></code></pre>
+
+<!-- ============================================================ -->
+<h2 id="api-controller">API: controller</h2>
+
+<p>Аналог <code>AnimationController</code> из GeckoLib. Один контроллер = один активный клип за раз. Множество контроллеров = одновременная игра разных клипов.</p>
+
+<div class="api-sig">controller.register(entity, name, transition_ticks, state_handler) → ctrl</div>
+<p>Создать контроллер. Если с таким именем уже есть — вернёт существующий.</p>
+<p><strong>state_handler:</strong> <code>(entity_state, ctrl) → "play", anim_name | "stop"</code>, вызывается каждый tick.</p>
+
+<div class="api-sig">controller.get(entity, name) → ctrl | nil</div>
+<div class="api-sig">controller.get_all(entity) → table</div>
+<div class="api-sig">controller.clear(entity)</div>
+<div class="api-sig">controller.clear_by_key(entity_key)</div>
+<div class="api-sig">controller.update_all(entity, dtime, entity_state)</div>
+<div class="api-sig">controller.build_pose(entity, ctx) → pose</div>
+<p>Собирает финальную позу со всех контроллеров, применяя приоритеты и аддитивность.</p>
+
+<h3>Методы экземпляра</h3>
+<div class="api-sig">ctrl:set_animation(anim_name, loop_type)</div>
+<div class="api-sig">ctrl:trigger(trigger_name) → bool</div>
+<div class="api-sig">ctrl:register_triggerable(name, anim_name)</div>
+<div class="api-sig">ctrl:stop_trigger()</div>
+<div class="api-sig">ctrl:update(dtime, entity_state)</div>
+<div class="api-sig">ctrl:get_pose(ctx) → pose</div>
+
+<h3>Свойства</h3>
+<table>
+<tr><th>Поле</th><th>Тип</th><th>Описание</th></tr>
+<tr><td><code>priority</code></td><td>number</td><td>Порядок применения (больше = позже перекрывает)</td></tr>
+<tr><td><code>additive</code></td><td>bool</td><td>Аддитивное смешивание вместо override</td></tr>
+<tr><td><code>weight</code></td><td>0..1</td><td>Вес вклада в итоговую позу</td></tr>
+<tr><td><code>is_playing</code></td><td>bool</td><td>Активен ли контроллер</td></tr>
+<tr><td><code>animation_time</code></td><td>number</td><td>Текущее время в секундах</td></tr>
+<tr><td><code>net_driven</code></td><td>bool</td><td>Управляется ли из сети (клиент)</td></tr>
+</table>
+
+<!-- ============================================================ -->
+<h2 id="api-sm">API: state_machine</h2>
+
+<p>Граф состояний с автоматическими переходами. Аналог Unity Animator.</p>
+
+<div class="api-sig">sm.register(entity, name) → Machine</div>
+<div class="api-sig">sm.get(entity, name) → Machine | nil</div>
+<div class="api-sig">sm.remove(entity, name)</div>
+<p>Если <code>name == "*"</code> или <code>nil</code> — удаляет все машины сущности.</p>
+<div class="api-sig">sm.update_all(dtime)</div>
+<p>Вызывается из globalstep автоматически.</p>
+
+<h3>Методы Machine</h3>
+<div class="api-sig">m:add_state(name, def)</div>
+<pre data-lang="lua"><code>{
+  layers = {
+    { controller = <span class="s">"main"</span>, anim = <span class="s">"walk"</span>,
+      weight = <span class="n">1</span>, blend = <span class="s">"override"</span>, mask = {head = <span class="b">true</span>} },
+    { controller = <span class="s">"breath"</span>, anim = <span class="s">"breathe"</span>,
+      weight = <span class="n">0.3</span>, blend = <span class="s">"additive"</span> },
+  },
+  speed = <span class="n">1.0</span>,
+  transitions = {
+    { to = <span class="s">"run"</span>, when = <span class="k">function</span>(ctx) <span class="k">return</span> ctx.speed &gt; <span class="n">4</span> <span class="k">end</span>,
+      duration_ticks = <span class="n">5</span>, priority = <span class="n">0</span> },
+    { to = <span class="s">"attack"</span>, when = <span class="s">"is_attacking &amp;&amp; !is_stunned"</span>,
+      duration_ticks = <span class="n">2</span>, priority = <span class="n">100</span> },
+  },
+  events = {
+    on_enter  = <span class="k">function</span>(entity, prev) <span class="k">end</span>,
+    on_exit   = <span class="k">function</span>(entity, next) <span class="k">end</span>,
+    on_update = <span class="k">function</span>(entity, dtime, state) <span class="k">end</span>,
+  },
+}</code></pre>
+
+<div class="api-sig">m:add_any_transition(def)</div>
+<p>Переход из любого состояния. Полезно для атаки / смерти / стана.</p>
+
+<div class="api-sig">m:set_initial(name)</div>
+<div class="api-sig">m:force_state(name, duration_ticks)</div>
+<div class="api-sig">m:set_bool(name, val)</div>
+<div class="api-sig">m:set_float(name, val)</div>
+<div class="api-sig">m:set_int(name, val)</div>
+<div class="api-sig">m:trigger(name)</div>
+<p>Триггер живёт один tick, потом сбрасывается.</p>
+<div class="api-sig">m:get_param(name) → any</div>
+<div class="api-sig">m:get_current_name() → string</div>
+<div class="api-sig">m:is_transitioning() → bool</div>
+<div class="api-sig">m:pause() / m:resume()</div>
+<div class="api-sig">m:add_listener(fn)</div>
+<p>Вызывается при каждой смене состояния: <code>fn(entity, new_state, old_state)</code>.</p>
+
+<h3>Хелпер: create_locomotion</h3>
+<div class="api-sig">sm.create_locomotion(entity, opts) → Machine</div>
+<p>Готовая машина idle/walk/run/jump. <strong>opts:</strong> <code>idle</code>, <code>walk</code>, <code>run</code>, <code>jump</code>, <code>breath</code>, <code>name</code>.</p>
+
+<!-- ============================================================ -->
+<h2 id="api-keyframes">API: keyframes</h2>
+
+<div class="api-sig">keyframes.set_sound_handler(entity, controller_name, fn)</div>
+<p><code>fn(entity, controller_name, data)</code></p>
+<div class="api-sig">keyframes.set_particle_handler(entity, controller_name, fn)</div>
+<div class="api-sig">keyframes.set_custom_handler(entity, controller_name, fn)</div>
+<div class="api-sig">keyframes.auto_sound_handler(entity, data)</div>
+<p>Встроенный обработчик: парсит <code>"sound_name|volume|pitch"</code>, играет через <code>minetest.sound_play</code>.</p>
+<div class="api-sig">keyframes.tick(entity, controller_name, prev_t, curr_t, events, looped)</div>
+<div class="api-sig">keyframes.clear(entity)</div>
+
+<!-- ============================================================ -->
+<h2 id="api-molang">API: molang</h2>
+
+<div class="api-sig">molang.eval(expr, ctx) → number</div>
+<pre data-lang="lua"><code>molang.<span class="f">eval</span>(<span class="s">"query.anim_time * 90"</span>, { anim_time = <span class="n">0.5</span> })  <span class="c">-- 45</span>
+molang.<span class="f">eval</span>(<span class="s">"5 * 4 + 2"</span>)                              <span class="c">-- 22</span>
+molang.<span class="f">eval</span>(<span class="s">"query.is_moving ? 1 : 0"</span>, {is_moving = <span class="b">true</span>}) <span class="c">-- 1</span></code></pre>
+
+<div class="api-sig">molang.eval_vec3(vec, ctx) → {x, y, z}</div>
+<div class="api-sig">molang.register_query(name, fn)</div>
+
+<h3>Встроенные queries</h3>
+<table>
+<tr><th>Имя</th><th>Описание</th></tr>
+<tr><td><code>query.anim_time</code></td><td>Время в текущей анимации</td></tr>
+<tr><td><code>query.life_time</code></td><td>Время с момента создания</td></tr>
+<tr><td><code>query.is_moving</code></td><td>1 если движется</td></tr>
+<tr><td><code>query.is_on_ground</code></td><td>1 если на земле</td></tr>
+<tr><td><code>query.health</code></td><td>Здоровье</td></tr>
+<tr><td><code>query.yaw</code></td><td>Поворот по Y</td></tr>
+<tr><td><code>query.pitch</code></td><td>Наклон</td></tr>
+</table>
+
+<!-- ============================================================ -->
+<h2 id="api-easing">API: easing</h2>
+
+<div class="api-sig">easing.get(name) → fn</div>
+
+<h3>Доступные кривые</h3>
+<pre data-lang="text"><code>linear
+easeInQuad      easeOutQuad     easeInOutQuad
+easeInCubic     easeOutCubic    easeInOutCubic
+easeInQuart     easeOutQuart
+easeInQuint     easeOutQuint
+easeInSine      easeOutSine     easeInOutSine
+easeInExpo      easeOutExpo
+easeInCirc      easeOutCirc
+easeInBack      easeOutBack
+easeInElastic   easeOutElastic
+easeOutBounce</code></pre>
+
+<div class="api-sig">easing.catmull_rom(p0, p1, p2, p3, t) → number</div>
+
+<h3>Свои кривые</h3>
+<pre data-lang="lua"><code>prapslib.easing.myCustomEase = <span class="k">function</span>(t)
+  <span class="k">return</span> t * t * t
+<span class="k">end</span>
+<span class="c">-- В JSON: "easing": "myCustomEase"</span></code></pre>
+
+<!-- ============================================================ -->
+<h2 id="api-math">API: math_utils</h2>
+
+<p>Доступна как <code>prapslib.math</code>.</p>
+
+<h3>Базовое</h3>
+<div class="api-sig">math.clamp(v, lo, hi) / clamp01(v) / sign(v)</div>
+<div class="api-sig">math.approach(current, target, delta)</div>
+<div class="api-sig">math.shortest_angle(a, b) → -π..π</div>
+<div class="api-sig">math.wrap(v, lo, hi) / wrap_angle(a)</div>
+<div class="api-sig">math.remap(v, in_lo, in_hi, out_lo, out_hi, clamped)</div>
+
+<h3>Интерполяции</h3>
+<div class="api-sig">math.lerp(a, b, t) / lerp_angle / lerp_vec3</div>
+<div class="api-sig">math.smoothstep(t) / smootherstep(t)</div>
+
+<h3>Bezier / Catmull-Rom</h3>
+<div class="api-sig">math.cubic_bezier(p0, p1, p2, p3, t) → vec3</div>
+<div class="api-sig">math.cubic_bezier_1d(p0, p1, p2, p3, t) → number</div>
+<div class="api-sig">math.catmull_rom(p0, p1, p2, p3, t) → vec3</div>
+
+<h3>Вектора</h3>
+<div class="api-sig">math.v3_add / sub / mul / neg</div>
+<div class="api-sig">math.v3_dot / cross</div>
+<div class="api-sig">math.v3_len / len_sq / dist</div>
+<div class="api-sig">math.v3_normalize / lerp</div>
+
+<h3>Quaternions (math.quat)</h3>
+<div class="api-sig">math.quat_from_euler(x, y, z) → q</div>
+<div class="api-sig">math.quat_to_euler(q) → rx, ry, rz</div>
+<div class="api-sig">math.quat_slerp(q1, q2, t) → q</div>
+<div class="api-sig">math.quat_normalize(q) / mul(a, b) / dot(a, b)</div>
+
+<h3>Angles</h3>
+<div class="api-sig">math.slerp_euler(e1, e2, t) → {rx, ry, rz}</div>
+<div class="api-sig">math.deg_to_rad_vec3(v) / rad_to_deg_vec3(v)</div>
+
+<h3>Procedural</h3>
+<div class="api-sig">math.noise1(x) → -1..1</div>
+<div class="api-sig">math.fbm1(x, octaves, lacunarity, gain) → -1..1</div>
+<div class="api-sig">math.look_at_euler(from, to, max_pitch, max_yaw) → euler</div>
+
+<h3>Geometry</h3>
+<div class="api-sig">math.ray_plane_y(origin, dir, plane_y) → point | nil</div>
+<div class="api-sig">math.closest_point_on_segment(p, a, b) → point</div>
+
+<!-- ============================================================ -->
+<h2 id="api-ik">API: ik</h2>
+
+<div class="api-sig">ik.solve_2bone(a, b, target) → {hip, knee}</div>
+<p>Аналитическое решение 2-костного IK. <strong>a</strong>, <strong>b</strong> — длины костей, <strong>target</strong> — цель относительно корня.</p>
+<pre data-lang="lua"><code><span class="k">local</span> sol = ik.<span class="f">solve_2bone</span>(<span class="n">1.0</span>, <span class="n">0.8</span>, {x=<span class="n">0.5</span>, y=<span class="n">-1.5</span>, z=<span class="n">0</span>})
+<span class="c">-- sol.hip  = {x=0, y=0, z=...}  (радианы)</span>
+<span class="c">-- sol.knee = {x=0, y=0, z=...}</span></code></pre>
+
+<div class="api-sig">ik.fabrik(chain, target, iterations) → angles</div>
+<p>FABRIK для цепочек любой длины. <strong>chain[i]</strong> = <code>{pos, origin, length}</code>.</p>
+
+<!-- ============================================================ -->
+<h2 id="api-net">API: net</h2>
+
+<div class="api-sig">net.set_animation_resolver(fn)</div>
+<p><code>fn(entity, anim_name) → anim_data</code>. Устанавливается один раз в init.</p>
+
+<div class="api-sig">net.register_client_receiver(on_set, on_trigger, on_stop)</div>
+<div class="api-sig">net.broadcast_set(entity, controller_name, anim_name, opts)</div>
+<div class="api-sig">net.broadcast_trigger(entity, controller_name, trigger_name)</div>
+<div class="api-sig">net.broadcast_stop(entity, controller_name)</div>
+<div class="api-sig">net.apply_client_set(eid, ctrl_name, anim_name, entry, entity, controller)</div>
+<div class="api-sig">net.get_client_time(eid, ctrl) → number</div>
+<div class="api-sig">net.track_entity(entity) / untrack_entity(entity)</div>
+<div class="api-sig">net.send_full_state(player)</div>
+<div class="api-sig">net.set_full_state_provider(fn)</div>
+
+<div class="callout">
+<strong>Как работает</strong>
+Сервер владеет временем анимации. При изменении состояния шлёт всем клиентам <code>{eid, ctrl, anim, t_sent, seq}</code> через <code>minetest.send_to_player</code> (modchannel). Клиент получает, считает <code>latency = now - t_sent</code>, добавляет к <code>start_time</code>, локально продвигает время. Sequence numbers защищают от устаревших пакетов.
+</div>
+
+<!-- ============================================================ -->
+<h2 id="api-parser">API: parser / cache</h2>
+
+<div class="api-sig">parser.parse_animation_file(filepath) → data | nil, err</div>
+<div class="api-sig">parser.process_animation_data(data, source_path) → data</div>
+<div class="api-sig">parser.process_single_animation(name, data) → anim</div>
+<div class="api-sig">parser.process_bone(name, data) → bone</div>
+<div class="api-sig">parser.process_keyframes(raw, property_type) → kfs</div>
+<div class="api-sig">parser.validate(processed) → errors[]</div>
+
+<div class="api-sig">cache.get_or_load(modname, entity_type) → data | nil, err</div>
+<p>Ищет: <code>modname/prapslib/&lt;entity&gt;.animation.json</code> → <code>modname/prapslib/entity.animation.json</code>.</p>
+<div class="api-sig">cache.get_animation(modname, entity_type, animation_name) → anim</div>
+<div class="api-sig">cache.clear()</div>
+
+<!-- ============================================================ -->
+<h2 id="recipe-locomotion">Рецепт: Locomotion + дыхание</h2>
+
+<pre data-lang="lua"><code><span class="k">local</span> m = prapslib.sm.<span class="f">create_locomotion</span>(entity, {
+  idle = <span class="s">"idle"</span>, walk = <span class="s">"walk"</span>,
+  run = <span class="s">"run"</span>, jump = <span class="s">"jump"</span>,
+  breath = <span class="s">"breathing"</span>,
+})
+<span class="c">-- Дыхание уже добавлено как additive на walk и run</span></code></pre>
+
+<!-- ============================================================ -->
+<h2 id="recipe-attack">Рецепт: Атака поверх любого состояния</h2>
+
+<pre data-lang="lua"><code>m:<span class="f">add_state</span>(<span class="s">"attack"</span>, {
+  layers = {
+    { controller = <span class="s">"upper"</span>, anim = <span class="s">"swing"</span>,
+      loop = <span class="s">"hold_on_last_frame"</span> },
+  },
+  transitions = {
+    { to = <span class="s">"idle"</span>, when = <span class="k">function</span>(ctx)
+        <span class="k">return</span> ctx.time_in_state &gt; <span class="n">1.2</span>
+      <span class="k">end</span>, duration_ticks = <span class="n">5</span> },
+  },
+})
+
+m:<span class="f">add_any_transition</span>({
+  to = <span class="s">"attack"</span>,
+  when = <span class="k">function</span>(ctx) <span class="k">return</span> ctx.attacking <span class="k">end</span>,
+  duration_ticks = <span class="n">2</span>,
+  priority = <span class="n">100</span>,
+})</code></pre>
+
+<!-- ============================================================ -->
+<h2 id="recipe-spider">Рецепт: Паук на IK <span class="badge beta">beta</span></h2>
+
+<p>Полностью процедурная локомоция — ноги сами подстраиваются под рельеф через raycast + IK.</p>
+
+<h3>Как это работает</h3>
+<ol>
+  <li><strong>Rest position</strong> — где нога «хочет» стоять относительно тела</li>
+  <li><strong>Raycast вниз</strong> — находит реальную землю под rest-позицией</li>
+  <li><strong>Step trigger</strong> — если нога уехала от rest — стартует шаг</li>
+  <li><strong>2-bone IK</strong> — считает углы бедра и колена до цели</li>
+  <li><strong>Gait</strong> — ноги делятся на 2 группы, шагают поочерёдно</li>
+</ol>
+
+<h3>Конфиг</h3>
+<pre data-lang="lua"><code>spider_legs.<span class="f">configure</span>(entity, {
+  body_height = <span class="n">1.0</span>,
+  step_trigger_distance = <span class="n">1.0</span>,
+  ground_search_up = <span class="n">3.0</span>,
+  ground_search_down = <span class="n">5.0</span>,
+  legs = {
+    { bone_upper=<span class="s">"leg_l1_up"</span>, bone_lower=<span class="s">"leg_l1_low"</span>,
+      hip_offset={x=<span class="n">-0.4</span>, y=<span class="n">0</span>, z=<span class="n">0.6</span>},
+      rest_offset={x=<span class="n">-1.5</span>, y=<span class="n">-0.8</span>, z=<span class="n">1.5</span>},
+      a=<span class="n">1.0</span>, b=<span class="n">1.0</span>, group=<span class="n">0</span>,
+      step_duration=<span class="n">0.22</span>, step_height=<span class="n">0.4</span> },
+    <span class="c">-- ... 7 остальных ног</span>
+  },
+})</code></pre>
+
+<h3>Цикл в on_step</h3>
+<pre data-lang="lua"><code>on_step = <span class="k">function</span>(self, dtime)
+  spider_legs.<span class="f">update</span>(self.object, dtime)
+  <span class="c">-- Движение тела — по твоему усмотрению</span>
+<span class="k">end</span></code></pre>
+
+<div class="callout">
+<strong>Порядок осей</strong>
+Если ноги крутятся не туда — поменяй <code>{x = hip_pitch, y = hip_yaw, z = 0}</code> на <code>{x = hip_yaw, y = hip_pitch, z = 0}</code>. Зависит от иерархии костей в модели.
+</div>
+
+<!-- ============================================================ -->
+<h2 id="recipe-player">Рецепт: Реанимация игрока <span class="badge new">экспериментально</span></h2>
+
+<p>Игрок в Luanti — это <code>ObjectRef</code>. Полноценно анимировать можно, если заменить visual на mesh/glTF.</p>
+
+<h3>Шаги</h3>
+
+<h4><span class="step-num">1</span>Заменить визуал</h4>
+<pre data-lang="lua"><code>minetest.<span class="f">register_on_joinplayer</span>(<span class="k">function</span>(player)
+  player:<span class="f">set_properties</span>({
+    visual = <span class="s">"mesh"</span>,
+    mesh = <span class="s">"mymod_character.gltf"</span>,
+    textures = {<span class="s">"character_skin.png"</span>},
+    visual_size = {x=<span class="n">1</span>, y=<span class="n">1</span>, z=<span class="n">1</span>},
+    collisionbox = {<span class="n">-0.3</span>, <span class="n">0.0</span>, <span class="n">-0.3</span>, <span class="n">0.3</span>, <span class="n">1.8</span>, <span class="n">0.3</span>},
+    stepheight = <span class="n">0.6</span>,
+  })
+<span class="k">end</span>)</code></pre>
+
+<h4><span class="step-num">2</span>Зарегистрировать в PrapsLib</h4>
+<pre data-lang="lua"><code>minetest.<span class="f">register_on_joinplayer</span>(<span class="k">function</span>(player)
+  prapslib.<span class="f">register_entity</span>(player)
+  prapslib.<span class="f">register_entity_data</span>(<span class="s">"mymod"</span>, <span class="s">"mymod:player"</span>)
+
+  <span class="k">local</span> m = prapslib.sm.<span class="f">create_locomotion</span>(player, {
+    idle = <span class="s">"player_idle"</span>, walk = <span class="s">"player_walk"</span>,
+    run  = <span class="s">"player_sprint"</span>, jump = <span class="s">"player_jump"</span>,
+  })
+  player._anim_machine = m
+<span class="k">end</span>)
+
+minetest.<span class="f">register_on_leaveplayer</span>(<span class="k">function</span>(player)
+  prapslib.<span class="f">unregister_entity</span>(player)
+<span class="k">end</span>)</code></pre>
+
+<h4><span class="step-num">3</span>Параметры через globalstep</h4>
+<pre data-lang="lua"><code>minetest.<span class="f">register_globalstep</span>(<span class="k">function</span>(dtime)
+  <span class="k">for</span> _, player <span class="k">in</span> <span class="f">ipairs</span>(minetest.<span class="f">get_connected_players</span>()) <span class="k">do</span>
+    <span class="k">local</span> m = player._anim_machine
+    <span class="k">if</span> m <span class="k">then</span>
+      <span class="k">local</span> vel = player:<span class="f">get_velocity</span>() <span class="k">or</span> {x=<span class="n">0</span>, y=<span class="n">0</span>, z=<span class="n">0</span>}
+      <span class="k">local</span> hspeed = math.<span class="f">sqrt</span>(vel.x^<span class="n">2</span> + vel.z^<span class="n">2</span>)
+      m:<span class="f">set_float</span>(<span class="s">"speed"</span>, hspeed)
+      m:<span class="f">set_bool</span>(<span class="s">"sprinting"</span>, player:<span class="f">get_player_control</span>().aux1 <span class="k">and</span> hspeed &gt; <span class="n">2</span>)
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>)</code></pre>
+
+<h3>⚠️ Подводные камни игрока</h3>
+<table>
+<tr><th>Проблема</th><th>Решение</th></tr>
+<tr><td>Клиент не слушает <code>set_bone_override</code> в MP</td><td>Прокси-сущность (см. ниже)</td></tr>
+<tr><td>Предмет в руке висит в воздухе</td><td>Имена костей <code>Right_Arm</code>, <code>Wield_Origin</code></td></tr>
+<tr><td>Предмет не видно от 3 лица</td><td>Мод <code>visible_wielditem</code></td></tr>
+<tr><td>Камера от 1 лица не двигается</td><td>Только <code>set_eye_offset</code> и <code>set_fov</code></td></tr>
+<tr><td>Skin/скины не работают</td><td>Своя система текстур через <code>player_api</code></td></tr>
+</table>
+
+<h3>Прокси-сущность (для MP)</h3>
+<ol>
+  <li>Скрыть оригинал: <code>player:set_properties({visual = "airlike"})</code></li>
+  <li>Спавнить сущность с твоей моделью</li>
+  <li>Каждый tick: <code>entity:set_pos(player:get_pos())</code>, <code>set_yaw</code></li>
+  <li>Анимировать <strong>сущность</strong> через PrapsLib</li>
+</ol>
+<p>Так делают моды <code>playeranim</code>, <code>skinsdb</code>. Минус — лишний объект, надо синхронизировать жизнь/смерть/hitbox.</p>
+
+<!-- ============================================================ -->
+<h2 id="recipe-net">Рецепт: Мультиплеер</h2>
+
+<p>Работает автоматически, если вызвал <code>prapslib.register_entity</code>. Для кастомных триггеров:</p>
+
+<pre data-lang="lua"><code><span class="c">-- На сервере:</span>
+prapslib.net.<span class="f">broadcast_trigger</span>(entity, <span class="s">"combat"</span>, <span class="s">"roar"</span>)
+
+<span class="c">-- Клиенты автоматически получат и вызовут ctrl:trigger("roar")</span></code></pre>
+
+<!-- ============================================================ -->
+<h2 id="conflicts">⚠️ Конфликты</h2>
+
+<div class="callout danger">
+<strong>Правда жизни</strong>
+В Luanti нет «слоя анимаций» как в Unity/Godot. Есть один глобальный <code>set_bone_override</code> — кто первый его дёрнул, того и поза. <strong>Last-write-wins</strong>. PrapsLib пишет последним в globalstep, поэтому его поза побеждает. Это by design.
+</div>
+
+<h3>Полная таблица конфликтов</h3>
+
+<table>
+<tr><th>Мод / система</th><th>Что делает</th><th>Тип</th></tr>
+<tr><td><strong>playeranim</strong></td><td>Свои <code>set_bone_override</code> на игрока</td><td><span class="badge danger">Прямой</span></td></tr>
+<tr><td><strong>mobs_redo</strong></td><td>Своя система анимации мобов через <code>set_animation</code></td><td><span class="badge danger">Прямой</span></td></tr>
+<tr><td><strong>creatura</strong></td><td>Своя система + <code>set_bone_override</code></td><td><span class="badge danger">Прямой</span></td></tr>
+<tr><td><strong>wielditem / hand</strong></td><td>Дёргает <code>Right_Arm</code>, <code>Wield_Origin</code></td><td><span class="badge danger">Прямой</span></td></tr>
+<tr><td><strong>3d_armor</strong></td><td>Меш поверх тела, использует стандартные кости</td><td><span class="badge beta">Косвенный</span></td></tr>
+<tr><td><strong>skinsdb</strong></td><td>Меняет текстуры, не кости</td><td><span class="badge new">OK</span></td></tr>
+<tr><td><strong>skinsdb + кастомный mesh</strong></td><td>Перезаписывает visual → ломает скелет</td><td><span class="badge danger">Прямой</span></td></tr>
+<tr><td><strong>Другой клон PrapsLib</strong></td><td>То же самое, но с другим API</td><td><span class="badge danger">Прямой</span></td></tr>
+<tr><td><strong>Кастомный <code>on_step</code> в entity</strong></td><td>Может перезаписать bone override после PrapsLib</td><td><span class="badge beta">Косвенный</span></td></tr>
+</table>
+
+<h3>Решения по каждому</h3>
+
+<div class="conflict-row">
+<h4>playeranim</h4>
+<p>Обе библиотеки пишут в одни кости игрока. <span class="solution">Решение:</span> отключить playeranim для PrapsLib-игроков, либо добавить в playeranim проверку <code>if entity._prapslib then return end</code>.</p>
+</div>
+
+<div class="conflict-row">
+<h4>mobs_redo</h4>
+<p>mobs_redo пишет <code>set_animation</code> в своём <code>on_step</code>, PrapsLib — в globalstep. PrapsLib победит, потому что globalstep идёт после. <span class="solution">Решение:</span> использовать mobs_redo только для AI, а анимации — через PrapsLib. Или обернуть:</p>
+<pre data-lang="lua"><code><span class="k">local</span> orig = mob_class.set_animation
+<span class="k">function</span> mob_class:<span class="f">set_animation</span>(...)
+  <span class="k">if</span> self._prapslib_anim <span class="k">then return end</span>
+  <span class="k">return</span> <span class="f">orig</span>(self, ...)
+<span class="k">end</span></code></pre>
+</div>
+
+<div class="conflict-row">
+<h4>wielditem / предмет в руке</h4>
+<p>Стандартная логика Luanti дёргает <code>Right_Arm</code> каждый кадр. <span class="solution">Решение:</span> использовать в модели имена костей <code>Right_Arm</code> и <code>Wield_Origin</code> — тогда wielditem сам привяжется корректно. Если кости названы иначе — предмет не будет виден.</p>
+</div>
+
+<div class="conflict-row">
+<h4>3d_armor</h4>
+<p>Броня крепится к стандартным костям. <span class="solution">Решение:</span> использовать стандартные имена <code>Body</code>, <code>Head</code> в своей модели. Если у тебя кастомные имена — придётся патчить 3d_armor или отказаться от него.</p>
+</div>
+
+<div class="conflict-row">
+<h4>skinsdb</h4>
+<p>Меняет только текстуры, не трогает кости. <span class="solution">Решение:</span> конфликтов нет, если skinsdb не перезаписывает <code>visual</code>. Если перезаписывает — применить <code>set_properties</code> после skinsdb (в <code>minetest.after(1)</code>).</p>
+</div>
+
+<div class="conflict-row">
+<h4>Кастомные on_step в entity</h4>
+<p>Если в <code>on_step</code> пишешь свой <code>set_bone_override</code> — он перетрётся PrapsLib. <span class="solution">Решение:</span> используй <code>prapslib.controller.register</code> с <code>priority &gt; 0</code> или зарегистрируй callback через PrapsLib.</p>
+</div>
+
+<h3>Стратегии разрешения</h3>
+
+<h4>1. Load order</h4>
+<p>PrapsLib <strong>должен грузиться последним</strong>. В <code>mod.conf</code> других модов: <code>optional_depends = prapslib</code> — и PrapsLib автоматически поднимется после них.</p>
+
+<h4>2. Namespace-конвенция</h4>
+<p>Обяжи пользователей PrapsLib использовать префикс в именах костей:</p>
+<pre data-lang="text"><code>praps_leg_upper
+praps_leg_lower
+praps_head</code></pre>
+<p>Тогда чужой мод, дёргающий <code>head</code> или <code>Right_Arm</code>, физически не тронет твои кости.</p>
+
+<h4>3. Медиатор через PrapsLib</h4>
+<p>Расширь API так, чтобы другие моды <strong>регистрировали свои слои через тебя</strong>, а не писали напрямую:</p>
+<pre data-lang="lua"><code>prapslib.controller.<span class="f">register</span>(entity, <span class="s">"third_party_mod"</span>, <span class="n">0</span>, <span class="k">function</span>(state)
+  <span class="k">return</span> <span class="s">"play"</span>, <span class="s">"their_anim"</span>
+<span class="k">end</span>)</code></pre>
+<p>Это правильный путь, но требует PR в mobs_redo/playeranim.</p>
+
+<h4>4. Reapply в after()</h4>
+<p>Если конкурент пишет в <code>on_step</code>, а ты в globalstep — ты всегда последний. Если наоборот — используй:</p>
+<pre data-lang="lua"><code>minetest.<span class="f">after</span>(<span class="n">0</span>, <span class="k">function</span>()
+  prapslib.animator.<span class="f">update_all</span>(dtime)  <span class="c">-- reapply поверх</span>
+<span class="k">end</span>)</code></pre>
+
+<!-- ============================================================ -->
+<h2 id="recommendations">Рекомендации</h2>
+
+<div class="tip">
+<strong>Для автора мода с PrapsLib:</strong> если ты выпускаешь мод с PrapsLib, ставь <code>depends = prapslib</code> в mod.conf, а не <code>optional_depends</code>. Иначе пользователи могут запустить мод без движка.
+</div>
+
+<h3>Что делать правильно</h3>
+<ul>
+  <li>✅ <strong>Загружай PrapsLib последним</strong> через <code>optional_depends</code> в других модах</li>
+  <li>✅ <strong>Используй один префикс костей</strong> — либо стандартные имена Luanti (<code>Right_Arm</code>), либо свой (<code>praps_*</code>), не смешивай</li>
+  <li>✅ <strong>Не пиши свой <code>set_bone_override</code></strong> если используешь PrapsLib — регистрируй через <code>controller</code></li>
+  <li>✅ <strong>Синхронизируй через net</strong> если у тебя MP — иначе клиенты рассинхронятся</li>
+  <li>✅ <strong>Используй glTF</strong>, а не b3d для новых моделей — экспорт из Blockbench напрямую</li>
+  <li>✅ <strong>Масштаб 1.6 в Blockbench</strong> — забудь про ручной пересчёт</li>
+  <li>✅ <strong>Не трогай <code>visual</code></strong> после register_entity — сломаешь скелет</li>
+  <li>✅ <strong>Проверяй <code>entity:get_pos()</code> на nil</strong> перед вызовом методов</li>
+</ul>
+
+<h3>Чего НЕ делать</h3>
+<ul>
+  <li>❌ Писать <code>obj:method and obj:method()</code> — крашит Lua 5.1</li>
+  <li>❌ Использовать <code>&lt;&lt;</code>, <code>&gt;&gt;</code>, <code>&amp;</code>, <code>|</code>, <code>~</code> бинарные — нет в LuaJIT</li>
+  <li>❌ Вызывать <code>minetest.get_server_info</code> — может быть nil</li>
+  <li>❌ Использовать <code>player:is_connected()</code> — метода не существует</li>
+  <li>❌ Перезаписывать <code>visual</code> после регистрации</li>
+  <li>❌ Пытаться анимировать матричные glTF-ноды</li>
+  <li>❌ Ставить CUBICSPLINE в glTF и ждать что Luanti поймёт</li>
+</ul>
+
+<h3>Правильный порядок загрузки</h3>
+<pre data-lang="text"><code>1. Минимальные зависимости (mobs_redo, player_api, etc)
+2. Библиотеки утилит (skinsdb, 3d_armor)
+3. PrapsLib        ← ЗАВИСИТ от всех выше
+4. Твой мод        ← ЗАВИСИТ от PrapsLib</code></pre>
+
+<!-- ============================================================ -->
+<h2 id="troubleshooting">Troubleshooting</h2>
+
+<h3>Мод не грузится, ошибка в консоли</h3>
+<table>
+<tr><th>Ошибка</th><th>Причина</th><th>Фикс</th></tr>
+<tr><td><code>function arguments expected near 'and'</code></td><td><code>obj:method and obj:method()</code></td><td>Замени на <code>if obj.method then obj:method() end</code></td></tr>
+<tr><td><code>unexpected symbol near '&lt;'</code></td><td>Бинарные операторы <code>&lt;&lt;</code>, <code>&gt;&gt;</code></td><td>Убери, используй <code>bit</code> если нужно</td></tr>
+<tr><td><code>attempt to index global 'X' (a nil value)</code></td><td>Не объявил <code>local X = {}</code> в начале файла</td><td>Добавь заголовок</td></tr>
+<tr><td><code>attempt to call field 'X' (a nil value)</code></td><td>Метода нет в этой версии Luanti</td><td>Проверь API, используй pcall</td></tr>
+<tr><td><code>attempt to call method 'is_connected'</code></td><td>У player нет такого метода</td><td>Используй <code>minetest.get_player_by_name</code></td></tr>
+</table>
+
+<h3>Анимация не играет</h3>
+<ol>
+  <li>Файл на месте? <code>mymod/prapslib/&lt;entity_name&gt;.animation.json</code></li>
+  <li><code>prapslib.register_entity_data</code> вернул nil? Смотри лог</li>
+  <li>Имя анимации в JSON совпадает с запросом?</li>
+  <li>Имена костей в JSON совпадают с моделью (регистр важен!)?</li>
+  <li>Модель glTF, а не b3d? Если b3d — проверь что <code>visual = "mesh"</code></li>
+</ol>
+
+<h3>Анимации рывками / дёргаются</h3>
+<ul>
+  <li>Проверь <code>interpolation</code> в JSON. По умолчанию <code>cubic</code></li>
+  <li>Ключевые кадры идут не реже чем раз в 0.1с?</li>
+  <li>Добавь <code>easing</code> к кадрам</li>
+  <li>Если glTF — Luanti игнорирует CUBICSPLINE, ставь LINEAR и easing через PrapsLib</li>
+</ul>
+
+<h3>Модель гигантская или крошечная</h3>
+<ul>
+  <li>Проверь <strong>Model Export Scale = 1.6</strong> в Blockbench</li>
+  <li>Если модель в блоках, а не пикселях — <code>POSITION_SCALE = 1.0</code></li>
+  <li>Если модель в пикселях — <code>POSITION_SCALE = 1.0 / 16.0</code> (по умолчанию)</li>
+</ul>
+
+<h3>Предмет в руке не виден от 3 лица</h3>
+<p>Это баг Luanti, не PrapsLib. Решение — мод <code>visible_wielditem</code>.</p>
+
+<h3>Player bone override не работает в MP</h3>
+<p>Клиент рендерит игрока сам, не слушает сервер. Решение — прокси-сущность (см. <a href="#recipe-player">Реанимация игрока</a>).</p>
+
+<!-- ============================================================ -->
+<h2 id="lua-pitfalls">Lua 5.1 подводные камни</h2>
+
+<p>Luanti работает на <strong>LuaJIT (Lua 5.1)</strong>. Не все фичи современного Lua доступны. Вот что чаще всего ломает код.</p>
+
+<h3>1. Метод с двоеточием и <code>and</code> — нельзя</h3>
+<pre data-lang="lua"><code><span class="c">-- ❌ КРАШИТ</span>
+<span class="k">local</span> id = entity:<span class="f">get_id</span> <span class="k">and</span> entity:<span class="f">get_id</span>()
+
+<span class="c">-- ✅ ПРАВИЛЬНО</span>
+<span class="k">local</span> id
+<span class="k">if</span> entity.get_id <span class="k">then</span> id = entity:<span class="f">get_id</span>() <span class="k">end</span></code></pre>
+<p>Двоеточие в Lua — это синтаксис вызова функции с self, оно <strong>не может</strong> существовать без <code>()</code>.</p>
+
+<h3>2. Бинарные операторы — нет</h3>
+<table>
+<tr><th>Оператор</th><th>Lua 5.1</th><th>Lua 5.3+</th></tr>
+<tr><td><code>a &lt;&lt; b</code></td><td>❌</td><td>✅</td></tr>
+<tr><td><code>a &gt;&gt; b</code></td><td>❌</td><td>✅</td></tr>
+<tr><td><code>a &amp; b</code></td><td>❌</td><td>✅</td></tr>
+<tr><td><code>a | b</code></td><td>❌</td><td>✅</td></tr>
+<tr><td><code>a ~ b</code> (xor)</td><td>❌</td><td>✅</td></tr>
+<tr><td><code>~a</code> (bnot)</td><td>❌</td><td>✅</td></tr>
+<tr><td><code>~=</code> (не равно)</td><td>✅</td><td>✅</td></tr>
+<tr><td><code>//</code> (цел. деление)</td><td>❌</td><td>✅</td></tr>
+</table>
+<p>Если реально нужны биты — <code>local bit = require("bit")</code> (LuaJIT встроенная).</p>
+
+<h3>3. Нет <code>goto</code> (в некоторых сборках)</h3>
+<p>LuaJIT может не иметь <code>goto</code>. Избегай.</p>
+
+<h3>4. Хеш <code>&lt;&lt; / &amp;</code> в шуме — ломает</h3>
+<p>Классический GLSL-хеш не переносится. Используй sin-хеш:</p>
+<pre data-lang="lua"><code><span class="k">local</span> <span class="k">function</span> <span class="f">hash1</span>(n)
+  <span class="k">local</span> x = math.<span class="f">sin</span>(n * <span class="n">12.9898</span>) * <span class="n">43758.5453</span>
+  <span class="k">return</span> <span class="n">2</span> * (x - math.<span class="f">floor</span>(x)) - <span class="n">1</span>
+<span class="k">end</span></code></pre>
+
+<!-- ============================================================ -->
+<h2 id="faq">FAQ</h2>
+
+<h3>Можно ли использовать PrapsLib на игроке?</h3>
+<p>Технически да. См. <a href="#recipe-player">Реанимация игрока</a>. Основная боль — синхронизация в MP и совместимость с wielditem.</p>
+
+<h3>Как добавить свой easing?</h3>
+<pre data-lang="lua"><code>prapslib.easing.myEase = <span class="k">function</span>(t) <span class="k">return</span> t * t * t <span class="k">end</span></code></pre>
+
+<h3>Как добавить свой Molang query?</h3>
+<pre data-lang="lua"><code>prapslib.molang.<span class="f">register_query</span>(<span class="s">"my_stat"</span>, <span class="k">function</span>(ctx)
+  <span class="k">return</span> ctx.entity <span class="k">and</span> ctx.entity.rage <span class="k">or</span> <span class="n">0</span>
+<span class="k">end</span>)</code></pre>
+
+<h3>Почему анимация слишком быстрая?</h3>
+<p><code>animation_length</code> в JSON — в секундах. Если в Blockbench было в тиках — умножь на 0.05.</p>
+
+<h3>Как заставить работать с 3d_armor?</h3>
+<p>Используй стандартные имена костей (<code>Body</code>, <code>Head</code>) в модели. Тогда 3d_armor привяжется сам.</p>
+
+<h3>Можно ли смешать PrapsLib с mobs_redo?</h3>
+<p>Да — использовать mobs_redo для AI, PrapsLib для анимаций. mobs_redo пишет в <code>on_step</code>, PrapsLib — в globalstep, побеждает PrapsLib.</p>
+
+<h3>Как сделать IK-ноги как у паука?</h3>
+<p>См. <a href="#recipe-spider">Рецепт: Паук на IK</a>.</p>
+
+<h3>Что делать с предупреждением CUBICSPLINE в glTF?</h3>
+<p>Luanti его игнорирует. Перенеси easing из glTF в <code>.animation.json</code> в поле <code>easing</code>. Или используй LINEAR в glTF.</p>
+
+<h3>Как перезагрузить анимации без перезапуска сервера?</h3>
+<pre data-lang="lua"><code>prapslib.<span class="f">clear_cache</span>()
+<span class="c">-- При следующем register_entity_data подтянет свежие файлы</span></code></pre>
+
+<!-- ============================================================ -->
+<h2 id="roadmap">Roadmap</h2>
+
+<ul>
+  <li>✅ Контроллеры + слои</li>
+  <li>✅ State machine</li>
+  <li>✅ Molang</li>
+  <li>✅ Keyframe events</li>
+  <li>✅ IK (2-bone + FABRIK)</li>
+  <li>✅ Мультиплеер</li>
+  <li>✅ glTF-ready</li>
+  <li>🟡 <strong>Blend Trees</strong> — 1D/2D смешивание по параметрам (Unity-style)</li>
+  <li>🟡 <strong>Attachments</strong> — частицы/объекты к костям</li>
+  <li>🟡 <strong>Animation Blueprint</strong> — визуальный граф в редакторе</li>
+  <li>🟡 <strong>Procedural physics</strong> — inertia, gravity bobbing, ragdoll</li>
+  <li>🟡 <strong>Hot-reload</strong> — <code>/prapslib reload</code> для анимаций</li>
+  <li>🟡 <strong>Editor integration</strong> — экспорт из Blockbench с автоматической генерацией state machine</li>
+  <li>🔵 <strong>Player bridge</strong> — чистая обёртка для игрока</li>
+  <li>🔵 <strong>Proxy entity</strong> — для MP-игроков</li>
+  <li>🔵 <strong>Visible wielditem</strong> — встроенное решение</li>
+  <li>🔵 <strong>Conflict resolver</strong> — автоматическая защита от mobs_redo/playeranim</li>
+</ul>
+
+<!-- ============================================================ -->
+<h2 id="credits">Credits</h2>
+
+<p><strong>PrapsLib 2.0</strong> — Built for Luanti 5.17+ · MIT License</p>
+<p style="color: var(--fg-dim); font-size: 13px;">
+Вдохновлено GeckoLib (Minecraft). Архитектура — контроллеры + слои + state machine. Парсинг формата — Bedrock Animated Model. Синхронизация — server-authoritative с lag compensation.
+</p>
+
+<hr>
+<p style="text-align: center; color: var(--fg-dim); font-size: 12px;">
+PrapsLib 2.0 · Полная документация · Последнее обновление: 2026
+</p>
+
+</main>
+</div>
+
+<script>
+// ============================================================
+// SEARCH FILTER
+// ============================================================
+(function() {
+  const search = document.getElementById('search');
+  if (!search) return;
+  const sidebarLinks = document.querySelectorAll('.sidebar nav a');
+
+  search.addEventListener('input', function() {
+    const q = this.value.toLowerCase().trim();
+    sidebarLinks.forEach(a => {
+      const text = a.textContent.toLowerCase();
+      const href = a.getAttribute('href') || '';
+      const parent = a.closest('li');
+      if (!q || text.includes(q) || href.includes(q)) {
+        parent.style.display = '';
+      } else {
+        parent.style.display = 'none';
+      }
+    });
+  });
+})();
+
+// ============================================================
+// ACTIVE LINK ON SCROLL
+// ============================================================
+(function() {
+  const links = Array.from(document.querySelectorAll('.sidebar nav a'));
+  const sections = links
+    .map(a => document.querySelector(a.getAttribute('href')))
+    .filter(Boolean);
+
+  function update() {
+    let current = null;
+    for (const s of sections) {
+      const rect = s.getBoundingClientRect();
+      if (rect.top <= 120) current = s;
+      else break;
+    }
+    links.forEach(a => a.classList.remove('active'));
+    if (current) {
+      const link = links.find(a => a.getAttribute('href') === '#' + current.id);
+      if (link) link.classList.add('active');
+    }
+  }
+  window.addEventListener('scroll', update, { passive: true });
+  update();
+})();
+
+// ============================================================
+// SMOOTH ANCHOR
+// ============================================================
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', function(e) {
+    const id = this.getAttribute('href');
+    if (id === '#') return;
+    const el = document.querySelector(id);
+    if (!el) return;
+    e.preventDefault();
+    el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    history.pushState(null, null, id);
+  });
+});
+
+// ============================================================
+// LANGUAGE LABELS ON <pre data-lang="...">
+// ============================================================
+document.querySelectorAll('pre[data-lang]').forEach(pre => {
+  // уже через CSS ::before
+});
+</script>
+
+</body>
+</html>
